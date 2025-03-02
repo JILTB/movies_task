@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:l/l.dart';
 import 'package:movies_task/di.dart';
+import 'package:movies_task/router_config.dart';
 
 void main() {
   l.capture<void>(
@@ -34,8 +35,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final Key builderKey = GlobalKey();
     return MaterialApp.router(
-      key: builderKey,
-
+      routerConfig: routerConfig,
       builder:
           (context, child) => MediaQuery(
             key: builderKey,

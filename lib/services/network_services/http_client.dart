@@ -7,9 +7,6 @@ import 'package:l/l.dart';
 import 'package:path/path.dart';
 
 class HttpClient {
-  static const String extraSpoofAuthToken = 'spoof_auth_token';
-  static const String headerDeviceId = 'x-device-id';
-
   HttpClient({required String baseUrl})
     : _dio = Dio(
         BaseOptions(
