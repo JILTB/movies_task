@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:movies_task/models/view_models/movie_details_screen_view_model.dart';
 import 'package:movies_task/models/view_models/movie_list_screen_view_model.dart';
 import 'package:movies_task/repositories/movie_repository.dart';
 import 'package:movies_task/services/movie_service.dart';
@@ -34,8 +35,12 @@ class DI {
   }
 
   static Future<void> _registerViewModels() async {
-    GetIt.instance.registerFactory<MovieListViewModelViewModelType>(
-      () => MovieListViewModelViewModel(resolve()),
-    );
+    GetIt.instance
+      ..registerFactory<MovieListViewModelViewModelType>(
+        () => MovieListViewModelViewModel(resolve()),
+      )
+      ..registerFactory<MovieDetailsScreenViewModelType>(
+        () => MovieDetailsScreenViewModel(resolve()),
+      );
   }
 }

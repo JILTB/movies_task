@@ -23,13 +23,11 @@ class MovieListViewModelViewModel
         MovieListViewModelViewModelOutput,
         MovieListViewModelViewModelType {
   MovieListViewModelViewModel(this._movieService) {
-    movieModels = _initTrigger
-        .asyncMap((_) => _movieService.loadMovies())
-        .shareReplay(maxSize: 1);
+    movieModels = _movieService.movieCache.shareReplay(maxSize: 1);
   }
 
   final MovieService _movieService;
-  final _initTrigger = BehaviorSubject.seeded(null);
+
   @override
   MovieListViewModelViewModelInput get input => this;
 
@@ -37,11 +35,13 @@ class MovieListViewModelViewModel
   MovieListViewModelViewModelOutput get output => this;
 
   @override
-  void dispose() {}
-
-  @override
   late final Stream<List<MovieModel>> movieModels;
 
   @override
-  void initLoad() {}
+  void initLoad() async {
+    await _movieService.loadMovies();
+  }
+
+  @override
+  void dispose() {}
 }

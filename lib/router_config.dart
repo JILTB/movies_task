@@ -25,8 +25,11 @@ List<RouteBase> _routes = [
             builder: (context, state) => ListScreen(),
             routes: [
               GoRoute(
-                path: '/movie:movieId',
-                builder: (context, state) => MovieDetailsScreen(),
+                path: 'movies/:movieId',
+                builder:
+                    (context, state) => MovieDetailsScreen(
+                      id: state.pathParameters['movieId']!,
+                    ),
               ),
             ],
           ),
