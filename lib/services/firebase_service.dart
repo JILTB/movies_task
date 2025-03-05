@@ -40,7 +40,7 @@ class FirebaseService {
         email: email,
         password: password,
       );
-      await _createUserDocument(userCredential.user!.uid, email);
+      await _createUserDocument(userCredential.user!.uid);
     } on FirebaseAuthException catch (e) {
       _firebaseError.add(e.message);
     }
@@ -54,10 +54,9 @@ class FirebaseService {
     }
   }
 
-  Future<void> _createUserDocument(String userId, String email) async {
+  Future<void> _createUserDocument(String uid) async {
     try {
-      await _firebaseFirestore.collection('users').doc(userId).set({
-        'email': email,
+      await _firebaseFirestore.collection('users').doc(uid).set({
         'likedMovies': [],
       }, SetOptions(merge: true));
     } catch (e) {
