@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:l/l.dart';
-import 'package:movies_task/di.dart';
-import 'package:movies_task/firebase_options.dart';
-import 'package:movies_task/router_config.dart';
+import 'package:movies_task/di/di.dart';
+import 'package:movies_task/di/firebase_options.dart';
+import 'package:movies_task/router/router_config.dart';
 
 void main() {
   l.capture<void>(

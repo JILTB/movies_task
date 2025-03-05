@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_task/di.dart';
-import 'package:movies_task/list_extenstion.dart';
+import 'package:movies_task/di/di.dart';
+import 'package:movies_task/extensions/list_extenstion.dart';
 import 'package:movies_task/models/view_models/favorite_movies_screen_view_model.dart';
 import 'package:movies_task/widgets/movie_list_item.dart';
 
@@ -20,13 +20,19 @@ class _FavScreenState extends State<FavScreen> {
   }
 
   @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Liked Movies')),
       body: StreamBuilder(
         stream: _viewModel.output.favoriteMovies,
         builder: (context, snapshot) {
-          return snapshot.hasData
+          return snapshot.hasData && snapshot.data!.isNotEmpty
               ? ListView.builder(
                 padding: EdgeInsets.only(left: 16, right: 16),
                 itemCount: snapshot.data!.length,
@@ -44,7 +50,7 @@ class _FavScreenState extends State<FavScreen> {
                   );
                 },
               )
-              : SizedBox.shrink();
+              : Center(child: Text('You dont have any liked movies'));
         },
       ),
     );

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:movies_task/di.dart';
+import 'package:movies_task/di/di.dart';
 import 'package:movies_task/models/view_models/account_screen_view_model.dart';
 import 'package:movies_task/widgets/button.dart';
 import 'package:rxdart/rxdart.dart';
@@ -40,6 +40,13 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   @override
+  void dispose() {
+    _viewModel.dispose();
+    _subscription.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Account Screen')),
@@ -50,9 +57,9 @@ class _AccountScreenState extends State<AccountScreen> {
               ? Center(
                 child: Column(
                   children: [
-                    Text(snapshot.data!.email ?? ''),
+                    Text('email: ${snapshot.data!.email}'),
                     SizedBox(height: 16),
-                    Text(snapshot.data!.uid),
+                    Text('uid:  ${snapshot.data!.uid}'),
                     SizedBox(height: 16),
                     SquareIconTextButton(
                       buttonColor: Colors.red,

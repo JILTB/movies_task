@@ -73,6 +73,10 @@ class MovieDetailsScreenViewModel
 
   @override
   void dispose() {
+    _initTrigger.close();
+    _addToFavoriteTrigger.close();
+    _removeFromFavoriteTrigger.close();
+
     _subscription.dispose();
   }
 

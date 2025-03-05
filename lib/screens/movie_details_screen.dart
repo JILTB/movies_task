@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:movies_task/di.dart';
-import 'package:movies_task/list_extenstion.dart';
+import 'package:movies_task/di/di.dart';
+import 'package:movies_task/extensions/list_extenstion.dart';
 import 'package:movies_task/models/movie_model.dart';
 import 'package:movies_task/models/view_models/movie_details_screen_view_model.dart';
 import 'package:movies_task/widgets/button.dart';
@@ -22,6 +22,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   void initState() {
     _viewModel.input.init(widget.id);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
   }
 
   @override

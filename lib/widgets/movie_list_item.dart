@@ -44,7 +44,7 @@ class MovieListItem extends StatelessWidget {
                 : Icon(Symbols.no_photography),
             SizedBox(height: 8),
             if (imdbRating != null)
-              Text('IMBD rating: $imdbRating', style: TextStyle(fontSize: 18)),
+              Text('IMDB rating: $imdbRating', style: TextStyle(fontSize: 18)),
             SizedBox(height: 8),
             Text(
               'user rating : ${userRating.toStringAsFixed(1)}',

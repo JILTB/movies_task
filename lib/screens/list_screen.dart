@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:movies_task/di.dart';
-import 'package:movies_task/list_extenstion.dart';
+import 'package:movies_task/di/di.dart';
+import 'package:movies_task/extensions/list_extenstion.dart';
 import 'package:movies_task/models/view_models/movie_list_screen_view_model.dart';
 import 'package:movies_task/widgets/movie_list_item.dart';
 
@@ -18,6 +18,12 @@ class _ListScreenState extends State<ListScreen> {
   void initState() {
     _viewModel.input.initLoad();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
   }
 
   @override

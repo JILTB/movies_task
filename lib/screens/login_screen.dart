@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:movies_task/di.dart';
+import 'package:movies_task/di/di.dart';
 import 'package:movies_task/models/view_models/login_screen_view_model.dart';
 import 'package:movies_task/widgets/button.dart';
 import 'package:rxdart/utils.dart';
@@ -41,6 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _viewModel.dispose();
+    _subscription.dispose();
     super.dispose();
   }
 

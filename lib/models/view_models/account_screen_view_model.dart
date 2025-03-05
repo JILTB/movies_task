@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movies_task/models/view_models/base_view_model.dart';
 import 'package:movies_task/services/firebase_service.dart';
-import 'package:movies_task/stream_extensions.dart';
+import 'package:movies_task/extensions/stream_extensions.dart';
 import 'package:rxdart/transformers.dart';
 
 abstract class AccountScreenViewModelInput {
