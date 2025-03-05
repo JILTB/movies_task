@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movies_task/di.dart';
+import 'package:movies_task/list_extenstion.dart';
 import 'package:movies_task/models/view_models/movie_list_screen_view_model.dart';
 import 'package:movies_task/widgets/movie_list_item.dart';
 
@@ -36,7 +37,8 @@ class _ListScreenState extends State<ListScreen> {
                     title: movieModel.title,
                     imageUrl: movieModel.posterurl,
                     imdbRating: movieModel.imdbRating,
-                    userRating: _calculateUserRating(movieModel.ratings ?? []),
+                    userRating:
+                        (movieModel.ratings ?? []).calculateUserRating(),
                     onTap: () {
                       context.push('/list/movies/${movieModel.id}');
                     },
@@ -47,10 +49,5 @@ class _ListScreenState extends State<ListScreen> {
         },
       ),
     );
-  }
-
-  double _calculateUserRating(List<int> userRating) {
-    if (userRating.isEmpty) return 0;
-    return (userRating.reduce((a, b) => a + b) / userRating.length);
   }
 }

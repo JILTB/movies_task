@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movies_task/models/view_models/account_screen_view_model.dart';
+import 'package:movies_task/models/view_models/favorite_movies_screen_view_model.dart';
 import 'package:movies_task/models/view_models/login_screen_view_model.dart';
 import 'package:movies_task/models/view_models/movie_details_screen_view_model.dart';
 import 'package:movies_task/models/view_models/movie_list_screen_view_model.dart';
@@ -33,7 +35,12 @@ class DI {
   static Future<void> _registerRepositories() async {
     GetIt.instance
       ..registerSingleton(MovieRepository(movieApi: resolve()))
-      ..registerSingleton(FirebaseService(firebaseAuth: FirebaseAuth.instance));
+      ..registerSingleton(
+        FirebaseService(
+          firebaseAuth: FirebaseAuth.instance,
+          firebaseFirestore: FirebaseFirestore.instance,
+        ),
+      );
   }
 
   static Future<void> _registerServices() async {
@@ -46,13 +53,16 @@ class DI {
         () => MovieListViewModelViewModel(resolve()),
       )
       ..registerFactory<MovieDetailsScreenViewModelType>(
-        () => MovieDetailsScreenViewModel(resolve()),
+        () => MovieDetailsScreenViewModel(resolve(), resolve()),
       )
       ..registerFactory<LoginScreenViewModelType>(
         () => LoginScreenViewModel(resolve()),
       )
       ..registerFactory<AccountScreenViewModelType>(
         () => AccountScreenViewModel(resolve()),
+      )
+      ..registerFactory<FavoriteMoviesScreenViewModelType>(
+        () => FavoriteMoviesScreenViewModel(resolve(), resolve()),
       );
   }
 }

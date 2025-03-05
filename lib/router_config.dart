@@ -37,7 +37,19 @@ List<RouteBase> _routes = [
       ),
       StatefulShellBranch(
         routes: [
-          GoRoute(path: '/fav', builder: (context, state) => FavScreen()),
+          GoRoute(
+            path: '/fav',
+            builder: (context, state) => FavScreen(),
+            routes: [
+              GoRoute(
+                path: 'movies/:movieId',
+                builder:
+                    (context, state) => MovieDetailsScreen(
+                      id: state.pathParameters['movieId']!,
+                    ),
+              ),
+            ],
+          ),
         ],
       ),
       StatefulShellBranch(

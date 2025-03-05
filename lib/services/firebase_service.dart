@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FirebaseService {
-  FirebaseService({required FirebaseAuth firebaseAuth})
-    : _firebaseAuth = firebaseAuth;
+  FirebaseService({
+    required FirebaseAuth firebaseAuth,
+    required FirebaseFirestore firebaseFirestore,
+  }) : _firebaseAuth = firebaseAuth,
+       _firebaseFirestore = firebaseFirestore;
 
   final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firebaseFirestore;
 
   final _firebaseError = PublishSubject<String?>();
 
@@ -31,10 +36,11 @@ class FirebaseService {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await _createUserDocument(userCredential.user!.uid, email);
     } on FirebaseAuthException catch (e) {
       _firebaseError.add(e.message);
     }
@@ -46,5 +52,58 @@ class FirebaseService {
     } on FirebaseAuthException catch (e) {
       _firebaseError.add(e.message);
     }
+  }
+
+  Future<void> _createUserDocument(String userId, String email) async {
+    try {
+      await _firebaseFirestore.collection('users').doc(userId).set({
+        'email': email,
+        'likedMovies': [],
+      }, SetOptions(merge: true));
+    } catch (e) {
+      _firebaseError.add(e.toString());
+    }
+  }
+
+  Future<void> likeMovie(String movieId) async {
+    final user = currentUser;
+    if (user == null) return;
+
+    try {
+      await _firebaseFirestore.collection('users').doc(user.uid).update({
+        'likedMovies': FieldValue.arrayUnion([movieId]),
+      });
+    } catch (e) {
+      _firebaseError.add(e.toString());
+    }
+  }
+
+  Future<void> unlikeMovie(String movieId) async {
+    final user = currentUser;
+    if (user == null) return;
+
+    try {
+      await _firebaseFirestore.collection('users').doc(user.uid).update({
+        'likedMovies': FieldValue.arrayRemove([movieId]),
+      });
+    } catch (e) {
+      _firebaseError.add(e.toString());
+    }
+  }
+
+  Stream<List<String>> getLikedMovies() {
+    final user = currentUser;
+    if (user == null) {
+      return Stream.value([]);
+    }
+
+    return _firebaseFirestore.collection('users').doc(user.uid).snapshots().map(
+      (doc) {
+        if (doc.exists) {
+          return List<String>.from(doc.data()?['likedMovies'] ?? []);
+        }
+        return [];
+      },
+    );
   }
 }

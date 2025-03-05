@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:movies_task/di.dart';
+import 'package:movies_task/list_extenstion.dart';
 import 'package:movies_task/models/movie_model.dart';
 import 'package:movies_task/models/view_models/movie_details_screen_view_model.dart';
 
@@ -72,7 +73,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Text(
-                    'user rating: ${_calculateUserRating(movie.ratings ?? []).toStringAsFixed(1)}',
+                    'user rating: ${(movie.ratings ?? []).calculateUserRating().toStringAsFixed(1)}',
                     style: TextStyle(fontSize: 18),
                     textAlign: TextAlign.center,
                   ),
@@ -114,13 +115,30 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     ),
                   ),
 
-                TextButton.icon(
-                  style: ButtonStyle(splashFactory: NoSplash.splashFactory),
-                  onPressed: () {
-                    _viewModel.input.addToFavorite(widget.id);
+                StreamBuilder<bool>(
+                  stream: _viewModel.output.isAddedToFav,
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? TextButton.icon(
+                          style: ButtonStyle(
+                            splashFactory: NoSplash.splashFactory,
+                          ),
+                          onPressed: () {
+                            snapshot.data!
+                                ? _viewModel.input.removeFromFavotire(widget.id)
+                                : _viewModel.input.addToFavorite(widget.id);
+                          },
+                          label:
+                              snapshot.data!
+                                  ? Text('Remove from Favorite')
+                                  : Text('Add to Favorite'),
+                          icon:
+                              snapshot.data!
+                                  ? Icon(Symbols.heart_minus)
+                                  : Icon(Symbols.heart_plus),
+                        )
+                        : SizedBox.shrink();
                   },
-                  label: Text('Add to Favorite'),
-                  icon: Icon(Symbols.heart_plus),
                 ),
               ],
             ),
@@ -128,10 +146,5 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         },
       ),
     );
-  }
-
-  double _calculateUserRating(List<int> userRating) {
-    if (userRating.isEmpty) return 0;
-    return (userRating.reduce((a, b) => a + b) / userRating.length);
   }
 }

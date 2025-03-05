@@ -50,7 +50,7 @@ class _AccountScreenState extends State<AccountScreen> {
                   children: [
                     Text(snapshot.data!.email ?? ''),
                     SizedBox(height: 16),
-
+                    Text(snapshot.data!.uid),
                     TextButton(
                       style: ButtonStyle(
                         backgroundColor: WidgetStatePropertyAll(Colors.red),
