@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:movies_task/di.dart';
 import 'package:movies_task/models/view_models/login_screen_view_model.dart';
+import 'package:movies_task/widgets/button.dart';
 import 'package:rxdart/utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -63,20 +65,18 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
+                  SquareIconTextButton(
                     onPressed: _viewModel.input.createAccount,
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.green),
-                    ),
-                    child: Text('create account'),
+                    icon: Symbols.person_add,
+                    label: 'create account',
+                    buttonColor: Colors.red,
                   ),
                   SizedBox(width: 16),
-                  TextButton(
+                  SquareIconTextButton(
                     onPressed: _viewModel.input.signIn,
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.yellow),
-                    ),
-                    child: Text('sign in'),
+                    icon: Symbols.login,
+                    label: 'sign in',
+                    buttonColor: Colors.green,
                   ),
                 ],
               ),

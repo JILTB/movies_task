@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:movies_task/di.dart';
 import 'package:movies_task/models/view_models/account_screen_view_model.dart';
+import 'package:movies_task/widgets/button.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -51,12 +53,12 @@ class _AccountScreenState extends State<AccountScreen> {
                     Text(snapshot.data!.email ?? ''),
                     SizedBox(height: 16),
                     Text(snapshot.data!.uid),
-                    TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.red),
-                      ),
+                    SizedBox(height: 16),
+                    SquareIconTextButton(
+                      buttonColor: Colors.red,
+                      icon: Symbols.logout,
                       onPressed: _viewModel.input.signOut,
-                      child: Text('sign out'),
+                      label: 'sign out',
                     ),
                   ],
                 ),

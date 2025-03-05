@@ -5,6 +5,7 @@ import 'package:movies_task/di.dart';
 import 'package:movies_task/list_extenstion.dart';
 import 'package:movies_task/models/movie_model.dart';
 import 'package:movies_task/models/view_models/movie_details_screen_view_model.dart';
+import 'package:movies_task/widgets/button.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   const MovieDetailsScreen({super.key, required this.id});
@@ -119,10 +120,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   stream: _viewModel.output.isAddedToFav,
                   builder: (context, snapshot) {
                     return snapshot.hasData
-                        ? TextButton.icon(
-                          style: ButtonStyle(
-                            splashFactory: NoSplash.splashFactory,
-                          ),
+                        ? SquareIconTextButton(
                           onPressed: () {
                             snapshot.data!
                                 ? _viewModel.input.removeFromFavotire(widget.id)
@@ -130,12 +128,16 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           },
                           label:
                               snapshot.data!
-                                  ? Text('Remove from Favorite')
-                                  : Text('Add to Favorite'),
+                                  ? 'Remove from Favorite'
+                                  : 'Add to Favorite',
                           icon:
                               snapshot.data!
-                                  ? Icon(Symbols.heart_minus)
-                                  : Icon(Symbols.heart_plus),
+                                  ? Symbols.heart_minus
+                                  : Symbols.heart_plus,
+                          buttonColor:
+                              snapshot.data!
+                                  ? Colors.red.withValues(alpha: 0.8)
+                                  : Colors.green.withValues(alpha: 0.8),
                         )
                         : SizedBox.shrink();
                   },
